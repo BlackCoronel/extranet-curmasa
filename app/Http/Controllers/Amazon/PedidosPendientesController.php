@@ -46,7 +46,7 @@ class PedidosPendientesController extends Controller
                     'fecha' => date('d/m/Y', strtotime($pedidoFormateado['purchase-date'])),
                     'comprador' => $pedidoFormateado['buyer-name'],
                     'producto' => $pedidoFormateado['product-name'],
-                    'direccion' => $pedidoFormateado['ship-address-1'],
+                    'direccion' => $pedidoFormateado['ship-address-1']  ,
                     'c_postal' => $pedidoFormateado['ship-postal-code'],
                     'telefono' => $pedidoFormateado['buyer-phone-number']
                 ];
