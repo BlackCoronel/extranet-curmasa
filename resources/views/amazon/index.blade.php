@@ -157,7 +157,7 @@
                     var files = $('#adjunto')[0].files[0];
                     fd.append('file', files);
                     $.ajax({
-                        url: 'http://api-amazon.test/amazon/pedidos-pendientes/importar',
+                        url: 'https://extranet.curmasa.info/amazon/pedidos-pendientes/importar',
                         type: 'POST',
                         headers: {'X-CSRF-TOKEN': csrf_token},
                         contentType: false,
@@ -165,7 +165,7 @@
                         data: fd,
                         success: function (result) {
                             $('#importar-pedidos').modal('hide');
-                            window.location.href = 'http://api-amazon.test/amazon/pedidos-pendientes';
+                            window.location.href = 'https://extranet.curmasa.info/amazon/pedidos-pendientes';
                         }
                     })
                 });
@@ -174,7 +174,7 @@
             let table = $('#myTable').DataTable({
                 responsive: true,
                 processing: true,
-                ajax: "http://api-amazon.test/amazon/pedidos-pendientes/search",
+                ajax: "https://extranet.curmasa.info/amazon/pedidos-pendientes/search",
                 searching: false,
                 ordering: true,
                 paginate: false,
@@ -242,14 +242,14 @@
                 });
 
                 $.ajax({
-                    url: 'http://api-amazon.test/amazon/pedidos-pendientes/posponer',
+                    url: 'https://extranet.curmasa.info/amazon/pedidos-pendientes/posponer',
                     type: 'POST',
                     headers: {'X-CSRF-TOKEN': csrf_token},
                     data: {
                         pedidos: pedidosIds
                     },
                     success: function (result) {
-                        window.location.href = 'http://api-amazon.test/amazon/pedidos-pendientes';
+                        window.location.href = 'https://extranet.curmasa.info/amazon/pedidos-pendientes';
                     }
                 });
             });
@@ -265,14 +265,14 @@
                 });
 
                 $.ajax({
-                    url: 'http://api-amazon.test/amazon/pedidos-pendientes/cancelar',
+                    url: 'https://extranet.curmasa.info/amazon/pedidos-pendientes/cancelar',
                     type: 'POST',
                     headers: {'X-CSRF-TOKEN': csrf_token},
                     data: {
                         pedidos: pedidosIds
                     },
                     success: function (result) {
-                        window.location.href = 'http://api-amazon.test/amazon/pedidos-pendientes';
+                        window.location.href = 'https://extranet.curmasa.info/amazon/pedidos-pendientes';
                     }
                 });
             });
@@ -286,7 +286,7 @@
             let table = $('#myTable').DataTable({
                 responsive: true,
                 processing: true,
-                ajax: "http://api-amazon.test/amazon/pedidos-pospuestos/search",
+                ajax: "https://extranet.curmasa.info/amazon/pedidos-pospuestos/search",
                 searching: false,
                 ordering: true,
                 paginate: false,
@@ -354,14 +354,14 @@
                 });
 
                 $.ajax({
-                    url: 'http://api-amazon.test/amazon/pedidos-pospuestos/pendientes',
+                    url: 'https://extranet.curmasa.info/amazon/pedidos-pospuestos/pendientes',
                     type: 'POST',
                     headers: {'X-CSRF-TOKEN': csrf_token},
                     data: {
                         pedidos: pedidosIds
                     },
                     success: function (result) {
-                        window.location.href = 'http://api-amazon.test/amazon/pedidos-pospuestos';
+                        window.location.href = 'https://extranet.curmasa.info/amazon/pedidos-pospuestos';
                     }
                 });
             });
@@ -377,14 +377,14 @@
                 });
 
                 $.ajax({
-                    url: 'http://api-amazon.test/amazon/pedidos-pospuestos/cancelar',
+                    url: 'https://extranet.curmasa.info/amazon/pedidos-pospuestos/cancelar',
                     type: 'POST',
                     headers: {'X-CSRF-TOKEN': csrf_token},
                     data: {
                         pedidos: pedidosIds
                     },
                     success: function (result) {
-                        window.location.href = 'http://api-amazon.test/amazon/pedidos-pospuestos';
+                        window.location.href = 'https://extranet.curmasa.info/amazon/pedidos-pospuestos';
                     }
                 });
             });
