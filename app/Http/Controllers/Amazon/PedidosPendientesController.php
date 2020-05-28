@@ -22,7 +22,6 @@ class PedidosPendientesController extends Controller
     {
         $pedidos = DB::table('pedido')
             ->where('estado', '=', EstadosPedido::$pendiente)
-            ->orderByDesc('purchase-date')
             ->get();
 
         if ($pedidos->count() === 0) {
@@ -39,18 +38,22 @@ class PedidosPendientesController extends Controller
         } else {
 
             $pedidosTabla = $pedidos->map(function ($pedido) {
-                $pedidoFormateado = collect($pedido)->sortByDesc('purchase-date')->toArray();
+                $pedidoFormateado = collect($pedido)->toArray();
                 return [
                     'id' => $pedidoFormateado['id'],
                     'referencia' => $pedidoFormateado['order-id'],
                     'fecha' => date('d/m/Y', strtotime($pedidoFormateado['purchase-date'])),
                     'comprador' => $pedidoFormateado['buyer-name'],
                     'producto' => $pedidoFormateado['product-name'],
-                    'direccion' => $pedidoFormateado['ship-address-1']  ,
+                    'direccion' => $pedidoFormateado['ship-address-1'],
                     'c_postal' => $pedidoFormateado['ship-postal-code'],
-                    'telefono' => $pedidoFormateado['buyer-phone-number']
+                    'telefono' => $pedidoFormateado['buyer-phone-number'],
+                    'hora' => $pedidoFormateado['purchase-hour'],
+                    'time' => ( strtotime($pedidoFormateado['purchase-date']) + strtotime($pedidoFormateado['purchase-hour']))
                 ];
             });
+
+            $pedidosTabla = $pedidosTabla->sortBy('time')->values();
         }
 
 
@@ -72,36 +75,38 @@ class PedidosPendientesController extends Controller
             $buscarPedido = DB::table('pedido')->where('order-id', $pedidoPendiente[0])->get();
             if ($buscarPedido->count() === 0) {
                 DB::table('pedido')->insert([
-                    "estado" => EstadosPedido::$pendiente,
-                    "order-id" => $pedidoPendiente[0],
-                    "order-item-id" => $pedidoPendiente[1],
-                    "purchase-date" => date('Y-m-d', strtotime($pedidoPendiente[2])),
-                    "payments-date" => date('Y-m-d', strtotime($pedidoPendiente[3])),
-                    "reporting-date" => date('Y-m-d', strtotime($pedidoPendiente[4])),
-                    "promise-date" => date('Y-m-d', strtotime($pedidoPendiente[5])),
-                    "days-past-promise" => $pedidoPendiente[6],
-                    "buyer-email" => $pedidoPendiente[7],
-                    "buyer-name" => $pedidoPendiente[8],
-                    "buyer-phone-number" => $pedidoPendiente[9],
-                    "sku" => $pedidoPendiente[10],
-                    "product-name" => $pedidoPendiente[11],
-                    "quantity-purchased" => $pedidoPendiente[12],
-                    "quantity-shipped" => $pedidoPendiente[13],
-                    "quantity-to-ship" => $pedidoPendiente[14],
-                    "ship-service-level" => $pedidoPendiente[15],
-                    "recipient-name" => $pedidoPendiente[16],
-                    "ship-address-1" => $pedidoPendiente[17],
-                    "ship-address-2" => $pedidoPendiente[18],
-                    "ship-address-3" => $pedidoPendiente[19],
-                    "ship-city" => $pedidoPendiente[20],
-                    "ship-state" => $pedidoPendiente[21],
-                    "ship-postal-code" => $pedidoPendiente[22],
-                    "ship-country" => $pedidoPendiente[23],
-                    "sales-channel" => $pedidoPendiente[24],
-                    "is-business-order" => $pedidoPendiente[25],
-                    "purchase-order-number" => $pedidoPendiente[26],
-                    "price-designation" => $pedidoPendiente[27],
-                    "is-sold-by-ab" => $pedidoPendiente[28],
+                    'estado' => EstadosPedido::$pendiente,
+                    'order-id' => $pedidoPendiente[0],
+                    'order-item-id' => $pedidoPendiente[1],
+                    'purchase-date' => date('Y-m-d', strtotime($pedidoPendiente[2])),
+                    'payments-date' => date('Y-m-d', strtotime($pedidoPendiente[3])),
+                    'reporting-date' => date('Y-m-d', strtotime($pedidoPendiente[4])),
+                    'promise-date' => date('Y-m-d', strtotime($pedidoPendiente[5])),
+                    'days-past-promise' => $pedidoPendiente[6],
+                    'buyer-email' => $pedidoPendiente[7],
+                    'buyer-name' => $pedidoPendiente[8],
+                    'buyer-phone-number' => $pedidoPendiente[9],
+                    'sku' => $pedidoPendiente[10],
+                    'product-name' => $pedidoPendiente[11],
+                    'quantity-purchased' => $pedidoPendiente[12],
+                    'quantity-shipped' => $pedidoPendiente[13],
+                    'quantity-to-ship' => $pedidoPendiente[14],
+                    'ship-service-level' => $pedidoPendiente[15],
+                    'recipient-name' => $pedidoPendiente[16],
+                    'ship-address-1' => $pedidoPendiente[17],
+                    'ship-address-2' => $pedidoPendiente[18],
+                    'ship-address-3' => $pedidoPendiente[19],
+                    'ship-city' => $pedidoPendiente[20],
+                    'ship-state' => $pedidoPendiente[21],
+                    'ship-postal-code' => $pedidoPendiente[22],
+                    'ship-country' => $pedidoPendiente[23],
+                    'sales-channel' => $pedidoPendiente[24],
+                    'is-business-order' => $pedidoPendiente[25],
+                    'purchase-order-number' => $pedidoPendiente[26],
+                    'price-designation' => $pedidoPendiente[27],
+                    'is-sold-by-ab' => $pedidoPendiente[28],
+                    'purchase-hour' => date('H:i:s', strtotime($pedidoPendiente[2])),
+                    'refc' =>  str_replace('-', '', $pedidoPendiente[0])
                 ]);
             }
         }

@@ -37,6 +37,8 @@ class Pedido extends Model
         'purchase-order-number',
         'price-designation',
         'is-sold-by-ab',
+        'purchase-hour',
+        'refc'
     ];
 
     protected $table = 'pedido';

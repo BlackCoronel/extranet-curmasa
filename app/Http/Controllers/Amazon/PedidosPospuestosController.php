@@ -19,7 +19,6 @@ class PedidosPospuestosController extends Controller
     {
         $pedidos = DB::table('pedido')
             ->where('estado', '=', EstadosPedido::$pospuesto)
-            ->orderByDesc('purchase-date')
             ->get();
 
         if ($pedidos->count() === 0) {
@@ -36,7 +35,7 @@ class PedidosPospuestosController extends Controller
         } else {
 
             $pedidosTabla = $pedidos->map(function ($pedido) {
-                $pedidoFormateado = collect($pedido)->sortByDesc('purchase-date')->toArray();
+                $pedidoFormateado = collect($pedido)->toArray();
                 return [
                     'id' => $pedidoFormateado['id'],
                     'referencia' => $pedidoFormateado['order-id'],
@@ -45,9 +44,13 @@ class PedidosPospuestosController extends Controller
                     'producto' => $pedidoFormateado['product-name'],
                     'direccion' => $pedidoFormateado['ship-address-1'],
                     'c_postal' => $pedidoFormateado['ship-postal-code'],
-                    'telefono' => $pedidoFormateado['buyer-phone-number']
+                    'telefono' => $pedidoFormateado['buyer-phone-number'],
+                    'hora' => $pedidoFormateado['purchase-hour'],
+                    'time' => ( strtotime($pedidoFormateado['purchase-date']) + strtotime($pedidoFormateado['purchase-hour']))
                 ];
             });
+
+            $pedidosTabla = $pedidosTabla->sortBy('time')->values();
         }
 
 

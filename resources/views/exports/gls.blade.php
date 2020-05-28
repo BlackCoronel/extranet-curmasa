@@ -9,6 +9,7 @@
         <th>observaciones</th>
         <th>bultos</th>
         <th>kilos</th>
+        <th>refC</th>
     </tr>
     </thead>
     <tbody>
@@ -22,6 +23,7 @@
             <td></td>
             <td>1</td>
             <td>1</td>
+            <td>{{ (string) $pedido['refc'] }}</td>
         </tr>
     @endforeach
     </tbody>

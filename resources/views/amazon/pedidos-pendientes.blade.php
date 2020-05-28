@@ -28,6 +28,7 @@
                 <tr>
                     <th>Ref. Amazon</th>
                     <th>Fecha</th>
+                    <th>Hora</th>
                     <th>Producto</th>
                     <th>Comprador</th>
                     <th>Dirección</th>
