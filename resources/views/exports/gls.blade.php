@@ -15,7 +15,7 @@
     <tbody>
     @foreach($pedidos as $pedido)
         <tr>
-            <td>{{ $pedido['buyer-name'] }}</td>
+            <td>{{ $pedido['recipient-name'] }}</td>
             <td>{{ $pedido['ship-address-1'] . ' ' . $pedido['ship-address-2'] . ' ' . $pedido['ship-address-3'] }}</td>
             <td>{{ $pedido['ship-postal-code'] }}</td>
             <td>{{ $pedido['ship-city'] }}</td>

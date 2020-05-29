@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Amazon;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\EstadosPedido;
 use App\PedidosPendientesExport;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -43,7 +44,7 @@ class PedidosPendientesController extends Controller
                     'id' => $pedidoFormateado['id'],
                     'referencia' => $pedidoFormateado['order-id'],
                     'fecha' => date('d/m/Y', strtotime($pedidoFormateado['purchase-date'])),
-                    'comprador' => $pedidoFormateado['buyer-name'],
+                    'comprador' => $pedidoFormateado['recipient-name'],
                     'producto' => $pedidoFormateado['product-name'],
                     'direccion' => $pedidoFormateado['ship-address-1'],
                     'c_postal' => $pedidoFormateado['ship-postal-code'],
@@ -74,11 +75,12 @@ class PedidosPendientesController extends Controller
         foreach ($data as $pedidoPendiente) {
             $buscarPedido = DB::table('pedido')->where('order-id', $pedidoPendiente[0])->get();
             if ($buscarPedido->count() === 0) {
+                $timestamp = str_replace('T', ' ', $pedidoPendiente[2]);
                 DB::table('pedido')->insert([
                     'estado' => EstadosPedido::$pendiente,
                     'order-id' => $pedidoPendiente[0],
                     'order-item-id' => $pedidoPendiente[1],
-                    'purchase-date' => date('Y-m-d', strtotime($pedidoPendiente[2])),
+                    'purchase-date' => Carbon::parse($timestamp)->setTimezone('EUROPE/MADRID')->format('Y-m-d'),
                     'payments-date' => date('Y-m-d', strtotime($pedidoPendiente[3])),
                     'reporting-date' => date('Y-m-d', strtotime($pedidoPendiente[4])),
                     'promise-date' => date('Y-m-d', strtotime($pedidoPendiente[5])),
@@ -105,7 +107,7 @@ class PedidosPendientesController extends Controller
                     'purchase-order-number' => $pedidoPendiente[26],
                     'price-designation' => $pedidoPendiente[27],
                     'is-sold-by-ab' => $pedidoPendiente[28],
-                    'purchase-hour' => date('H:i:s', strtotime($pedidoPendiente[2])),
+                    'purchase-hour' => Carbon::parse($timestamp)->setTimezone('EUROPE/MADRID')->format('H:i:s'),
                     'refc' =>  str_replace('-', '', $pedidoPendiente[0])
                 ]);
             }

@@ -40,7 +40,7 @@ class PedidosPospuestosController extends Controller
                     'id' => $pedidoFormateado['id'],
                     'referencia' => $pedidoFormateado['order-id'],
                     'fecha' => date('d/m/Y', strtotime($pedidoFormateado['purchase-date'])),
-                    'comprador' => $pedidoFormateado['buyer-name'],
+                    'comprador' => $pedidoFormateado['recipient-name'],
                     'producto' => $pedidoFormateado['product-name'],
                     'direccion' => $pedidoFormateado['ship-address-1'],
                     'c_postal' => $pedidoFormateado['ship-postal-code'],
