@@ -5,22 +5,28 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
             <h1 class="h2">Pedidos pendientes</h1>
         </div>
-        <div class="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <button class="btn btn-link text-primary" id="importar-pedidos-buttton">
-                <span data-feather="file-plus"></span> Importar pedidos
-            </button>
-            <button class="btn btn-link text-warning" id="posponer-envio">
-                <span data-feather="clock"></span> Posponer envío
-            </button>
-            <button class="btn btn-link text-danger" id="cancelar-envio">
-                <span data-feather="x-circle"></span> Cancelar pedido
-            </button>
-            <a href="/amazon/pedidos-pendientes/exportar-gls" class="btn btn-link text-secondary">
-                <span data-feather="file-text"></span> Exportar pedidos GLS
-            </a>
-            <button class="btn btn-link text-success" id="Confirmar envíos">
-                <span data-feather="check"></span> Confirmar envíos
-            </button>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <div class="pl-4">
+                <input type="checkbox" class="form-check-input" id="seleccionar-todos">
+                <label class="form-check-label text-primary" for="seleccionar-todos">Seleccionar todos</label>
+            </div>
+            <div>
+                <button class="btn btn-link text-primary" id="importar-pedidos-buttton">
+                    <span data-feather="file-plus"></span> Importar pedidos
+                </button>
+                <button class="btn btn-link text-warning" id="posponer-envio">
+                    <span data-feather="clock"></span> Posponer envío
+                </button>
+                <button class="btn btn-link text-danger" id="cancelar-envio">
+                    <span data-feather="x-circle"></span> Cancelar pedido
+                </button>
+                <a href="/amazon/pedidos-pendientes/exportar-gls" class="btn btn-link text-secondary">
+                    <span data-feather="file-text"></span> Exportar pedidos GLS
+                </a>
+                <button class="btn btn-link text-success" id="Confirmar envíos">
+                    <span data-feather="check"></span> Confirmar envíos
+                </button>
+            </div>
         </div>
         <div class="mt-3" style="width:100%;">
             <table class="table table-striped table-bordered" id="myTable" style="width:100%;">

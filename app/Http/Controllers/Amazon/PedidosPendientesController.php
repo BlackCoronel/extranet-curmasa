@@ -108,7 +108,7 @@ class PedidosPendientesController extends Controller
                     'price-designation' => $pedidoPendiente[27],
                     'is-sold-by-ab' => $pedidoPendiente[28],
                     'purchase-hour' => Carbon::parse($timestamp)->setTimezone('EUROPE/MADRID')->format('H:i:s'),
-                    'refc' =>  str_replace('-', '', $pedidoPendiente[0])
+                    'refc' =>  uniqid()
                 ]);
             }
         }

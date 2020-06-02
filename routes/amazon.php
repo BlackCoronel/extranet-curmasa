@@ -22,3 +22,11 @@ Route::get('pedidos-pospuestos', 'PedidosPospuestosController@index');
 Route::get('pedidos-pospuestos/search', 'PedidosPospuestosController@search');
 Route::post('pedidos-pospuestos/pendientes', 'PedidosPospuestosController@enviarAPendientes');
 Route::post('pedidos-pospuestos/cancelar', 'PedidosPendientesController@cancelarPedido');
+/*
+ * Pedidos Cancelados
+ */
+Route::get('pedidos-cancelados', 'PedidosCanceladosController@index');
+Route::get('pedidos-cancelados/search', 'PedidosCanceladosController@search');
+Route::post('pedidos-cancelados/pendientes', 'PedidosCanceladosController@enviarAPendientes');
+Route::post('pedidos-cancelados/pospuestos', 'PedidosCanceladosController@enviarAPospuestos');
+Route::post('pedidos-cancelados/delete', 'PedidosCanceladosController@deleteMultiple');

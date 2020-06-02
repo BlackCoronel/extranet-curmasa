@@ -231,6 +231,18 @@
                 }
             });
 
+            $('#seleccionar-todos').change(function () {
+                let checked = $(this).prop('checked');
+                switch (checked) {
+                    case true:
+                        table.rows().select();
+                        break;
+                    case false:
+                        table.rows().deselect();
+                        break;
+                }
+            });
+
             $('#posponer-envio').click(function () {
 
                 let selectedRows = table.rows({selected: true});
@@ -343,6 +355,18 @@
                 }
             });
 
+            $('#seleccionar-todos').change(function () {
+                let checked = $(this).prop('checked');
+                switch (checked) {
+                    case true:
+                        table.rows().select();
+                        break;
+                    case false:
+                        table.rows().deselect();
+                        break;
+                }
+            });
+
             $('#pedidos-pendientes').click(function () {
 
                 let selectedRows = table.rows({selected: true});
@@ -385,6 +409,154 @@
                     },
                     success: function (result) {
                         window.location.href = 'https://extranet.curmasa.info/amazon/pedidos-pospuestos';
+                    }
+                });
+            });
+        });
+    </script>
+    @endi
+@elseif(Request::path() === 'amazon/pedidos-cancelados')
+    <script>
+        $(document).ready(function () {
+            const csrf_token = $('meta[name="csrf-token"]').attr('content');
+
+            let table = $('#myTable').DataTable({
+                responsive: true,
+                processing: true,
+                ajax: "https://extranet.curmasa.info/amazon/pedidos-cancelados/search",
+                searching: false,
+                ordering: true,
+                paginate: false,
+                columns: [
+                    {data: "referencia"},
+                    {data: "fecha"},
+                    {data: "hora"},
+                    {data: "producto"},
+                    {data: "comprador"},
+                    {data: "direccion"},
+                    {data: "c_postal"},
+                    {data: "telefono"},
+                ],
+                order: [[1, "asc"]],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        checkboxes: {
+                            selectRow: true
+                        }
+                    }
+                ],
+                select: {
+                    style: 'multi'
+                },
+                retrieve: true,
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla =(",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                }
+            });
+
+            $('#seleccionar-todos').change(function () {
+                let checked = $(this).prop('checked');
+                switch (checked) {
+                    case true:
+                        table.rows().select();
+                        break;
+                    case false:
+                        table.rows().deselect();
+                        break;
+                }
+            });
+
+            $('#pedidos-pendientes').click(function () {
+
+                let selectedRows = table.rows({selected: true});
+
+                let pedidosIds = [];
+
+                $.map(selectedRows.data(), function (item) {
+                    pedidosIds.push(item.id)
+                });
+
+                $.ajax({
+                    url: 'https://extranet.curmasa.info/amazon/pedidos-cancelados/pendientes',
+                    type: 'POST',
+                    headers: {'X-CSRF-TOKEN': csrf_token},
+                    data: {
+                        pedidos: pedidosIds
+                    },
+                    success: function (result) {
+                        window.location.href = 'https://extranet.curmasa.info/amazon/pedidos-cancelados';
+                    }
+                });
+            });
+
+            $('#pedidos-pospuestos').click(function () {
+
+                let selectedRows = table.rows({selected: true});
+
+                let pedidosIds = [];
+
+                $.map(selectedRows.data(), function (item) {
+                    pedidosIds.push(item.id)
+                });
+
+                $.ajax({
+                    url: 'https://extranet.curmasa.info/amazon/pedidos-cancelados/pospuestos',
+                    type: 'POST',
+                    headers: {'X-CSRF-TOKEN': csrf_token},
+                    data: {
+                        pedidos: pedidosIds
+                    },
+                    success: function (result) {
+                        window.location.href = 'https://extranet.curmasa.info/amazon/pedidos-cancelados';
+                    }
+                });
+            });
+
+            $('#eliminar-pedidos').click(function () {
+
+                let selectedRows = table.rows({selected: true});
+
+                let pedidosIds = [];
+
+                $.map(selectedRows.data(), function (item) {
+                    pedidosIds.push(item.id)
+                });
+
+                $.ajax({
+                    url: 'https://extranet.curmasa.info/amazon/pedidos-cancelados/delete',
+                    type: 'POST',
+                    headers: {'X-CSRF-TOKEN': csrf_token},
+                    data: {
+                        pedidos: pedidosIds
+                    },
+                    success: function (result) {
+                        window.location.href = 'https://extranet.curmasa.info/amazon/pedidos-cancelados';
                     }
                 });
             });
