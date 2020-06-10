@@ -23,7 +23,7 @@
                 <a href="/amazon/pedidos-pendientes/exportar-gls" class="btn btn-link text-secondary">
                     <span data-feather="file-text"></span> Exportar pedidos GLS
                 </a>
-                <button class="btn btn-link text-success" id="Confirmar envíos">
+                <button class="btn btn-link text-success" id="confirmar-pedidos-button">
                     <span data-feather="check"></span> Confirmar envíos
                 </button>
             </div>
@@ -64,6 +64,32 @@
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" id="importar">Importar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal" tabindex="-1" role="dialog" id="confirmar-pedidos">
+            <form enctype="multipart/form-data" id="confirmarPedidosForm" method="post">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirmar Pedidos</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label for="adjunto-gls">Documento envios GLS</label>
+                                <input type="file" id="adjunto-gls" name="adjunto">
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Confirmar</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>

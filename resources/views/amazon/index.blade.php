@@ -171,6 +171,37 @@
                 });
             });
 
+            $('#confirmar-pedidos-button').click(function () {
+                $('#confirmar-pedidos').modal('show');
+                $($('#confirmarPedidosForm')).submit(function (e) {
+                    e.preventDefault();
+                    var fd = new FormData();
+                    var files = $('#adjunto-gls')[0].files[0];
+                    fd.append('file', files);
+                    $.ajax({
+                        url: 'https://extranet.curmasa.info/amazon/pedidos-pendientes/confirmar',
+                        type: 'POST',
+                        headers: {'X-CSRF-TOKEN': csrf_token},
+                        xhrFields: {responseType: 'blob'},
+                        contentType: false,
+                        processData: false,
+                        data: fd,
+                        success: function (result) {
+                            var a = document.createElement('a');
+                            var url = window.URL.createObjectURL(result);
+                            a.href = url;
+                            a.download = 'confirmacion-pedidos-amazon' + Date.now() + '.xlsx';
+                            document.body.append(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                            $('#confirmar-pedidos').modal('hide');
+                            window.location.href = 'https://extranet.curmasa.info/amazon/pedidos-pendientes';
+                        }
+                    })
+                });
+            });
+
             let table = $('#myTable').DataTable({
                 responsive: true,
                 processing: true,

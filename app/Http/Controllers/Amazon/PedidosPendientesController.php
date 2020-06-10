@@ -4,8 +4,10 @@
 namespace App\Http\Controllers\Amazon;
 
 
+use App\ConfirmarEnviosImport;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\EstadosPedido;
+use App\PedidosConfirmadosEnviadosExport;
 use App\PedidosPendientesExport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -50,7 +52,7 @@ class PedidosPendientesController extends Controller
                     'c_postal' => $pedidoFormateado['ship-postal-code'],
                     'telefono' => $pedidoFormateado['buyer-phone-number'],
                     'hora' => $pedidoFormateado['purchase-hour'],
-                    'time' => ( strtotime($pedidoFormateado['purchase-date']) + strtotime($pedidoFormateado['purchase-hour']))
+                    'time' => (strtotime($pedidoFormateado['purchase-date']) + strtotime($pedidoFormateado['purchase-hour']))
                 ];
             });
 
@@ -108,10 +110,63 @@ class PedidosPendientesController extends Controller
                     'price-designation' => $pedidoPendiente[27],
                     'is-sold-by-ab' => $pedidoPendiente[28],
                     'purchase-hour' => Carbon::parse($timestamp)->setTimezone('EUROPE/MADRID')->format('H:i:s'),
-                    'refc' =>  uniqid()
+                    'refc' => uniqid()
                 ]);
             }
         }
+    }
+
+    public function confirmarEnvios(Request $request)
+    {
+        $file = $request->file('file');
+
+        $data = array_map(function ($v) {
+            return $v;
+        }, file($file));
+
+        $cantidadPedidos = collect($data)->count();
+
+        unset($data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], $data[7], $data[$cantidadPedidos - 3], $data[$cantidadPedidos - 2], $data[$cantidadPedidos - 1]);
+
+        $pedidosGLS = collect($data);
+
+        $pedidosGLS->map(function ($pedido, $key) use ($pedidosGLS) {
+            if ($pedido === "\t\t</tr><tr>\r\n") {
+                $pedidosGLS->forget($key);
+            }
+        });
+
+        $pedidosFormateados = $pedidosGLS->map(function ($pedido) {
+            $pedidoReplaced = str_replace("\t\t\t<td>", '', $pedido);
+            $pedidoReplaced = str_replace('</td><td>', '###', $pedidoReplaced);
+            $pedidoReplaced = str_replace("</td>\r\n", '', $pedidoReplaced);
+            return explode('###', $pedidoReplaced);
+        });
+
+        $pedidosEnviadosConfirmados = [];
+
+        $pedidosFormateados->map(function ($pedido) use (&$pedidosEnviadosConfirmados) {
+            $buscarPedido = DB::table('pedido')
+                ->where('refc', '=', $pedido[16])
+                ->where('numero_seguimiento', '=', null)
+                ->get();
+            if ($buscarPedido->count() === 1) {
+                DB::table('pedido')->where('id', $buscarPedido[0]->id)->update([
+                    'numero_seguimiento' => $pedido[2],
+                    'estado' => EstadosPedido::$enviado
+                ]);
+                $pedidoActualizado = DB::table('pedido')->where('id', '=', $buscarPedido[0]->id)->get();
+                $buscarPedidoFormateado = collect($pedidoActualizado[0])->toArray();
+                $pedidosEnviadosConfirmados[] = [
+                    'order-id' => $buscarPedidoFormateado['order-id'],
+                    'order-item-id' => $buscarPedidoFormateado['order-item-id'],
+                    'numero_seguimiento' => $buscarPedidoFormateado['numero_seguimiento']
+                ];
+            }
+        });
+
+        return Excel::download(new PedidosConfirmadosEnviadosExport($pedidosEnviadosConfirmados), 'confirmacion-envios-amazon' . date('d-m-Y') . '.xlsx');
+
     }
 
     public function exportacionGLS()

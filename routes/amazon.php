@@ -12,6 +12,7 @@ Route::get('/', 'AmazonController@index');
 Route::get('pedidos-pendientes', 'PedidosPendientesController@index');
 Route::get('pedidos-pendientes/search', 'PedidosPendientesController@search');
 Route::post('pedidos-pendientes/importar', 'PedidosPendientesController@importar');
+Route::post('pedidos-pendientes/confirmar', 'PedidosPendientesController@confirmarEnvios');
 Route::post('pedidos-pendientes/posponer', 'PedidosPendientesController@posponerEnvio');
 Route::post('pedidos-pendientes/cancelar', 'PedidosPendientesController@cancelarPedido');
 Route::get('pedidos-pendientes/exportar-gls', 'PedidosPendientesController@exportacionGLS');
