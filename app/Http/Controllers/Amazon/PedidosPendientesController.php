@@ -3,8 +3,6 @@
 
 namespace App\Http\Controllers\Amazon;
 
-
-use App\ConfirmarEnviosImport;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\EstadosPedido;
 use App\PedidosConfirmadosEnviadosExport;
@@ -160,12 +158,13 @@ class PedidosPendientesController extends Controller
                 $pedidosEnviadosConfirmados[] = [
                     'order-id' => $buscarPedidoFormateado['order-id'],
                     'order-item-id' => $buscarPedidoFormateado['order-item-id'],
-                    'numero_seguimiento' => $buscarPedidoFormateado['numero_seguimiento']
+                    'numero_seguimiento' => $buscarPedidoFormateado['numero_seguimiento'],
+                    'quantity-to-ship' => $buscarPedidoFormateado['quantity-to-ship']
                 ];
             }
         });
 
-        return Excel::download(new PedidosConfirmadosEnviadosExport($pedidosEnviadosConfirmados), 'confirmacion-envios-amazon' . date('d-m-Y') . '.xlsx');
+        return Excel::download(new PedidosConfirmadosEnviadosExport($pedidosEnviadosConfirmados), 'confirmacion-envios-amazon' . date('d-m-Y') . '.tsv', \Maatwebsite\Excel\Excel::TSV);
 
     }
 

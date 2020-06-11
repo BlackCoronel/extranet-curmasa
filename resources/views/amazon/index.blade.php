@@ -190,7 +190,7 @@
                             var a = document.createElement('a');
                             var url = window.URL.createObjectURL(result);
                             a.href = url;
-                            a.download = 'confirmacion-pedidos-amazon' + Date.now() + '.xlsx';
+                            a.download = 'confirmacion-pedidos-amazon' + Date.now() + '.tsv';
                             document.body.append(a);
                             a.click();
                             a.remove();

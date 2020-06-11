@@ -17,8 +17,8 @@
         <tr>
             <td>{{ $pedido['order-id'] }}</td>
             <td>{{ $pedido['order-item-id'] }}</td>
-            <td>1</td>
-            <td>{{ date('d-m-Y') }}</td>
+            <td>{{ $pedido['quantity-to-ship'] }}</td>
+            <td>{{ date('Y-m-d') }}</td>
             <td>GLS</td>
             <td></td>
             <td>{{ $pedido['numero_seguimiento'] }}</td>
