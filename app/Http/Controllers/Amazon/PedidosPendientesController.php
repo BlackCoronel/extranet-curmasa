@@ -75,7 +75,6 @@ class PedidosPendientesController extends Controller
         foreach ($data as $pedidoPendiente) {
             $buscarPedido = DB::table('pedido')->where('order-id', $pedidoPendiente[0])->get();
             if ($buscarPedido->count() === 0) {
-                dump(substr($pedidoPendiente[22], 0, 2));
                 if(substr($pedidoPendiente[22], 0, 2) !== '07') {
                     $timestamp = str_replace('T', ' ', $pedidoPendiente[2]);
                     DB::table('pedido')->insert([
