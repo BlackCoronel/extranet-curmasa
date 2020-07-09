@@ -75,41 +75,44 @@ class PedidosPendientesController extends Controller
         foreach ($data as $pedidoPendiente) {
             $buscarPedido = DB::table('pedido')->where('order-id', $pedidoPendiente[0])->get();
             if ($buscarPedido->count() === 0) {
-                $timestamp = str_replace('T', ' ', $pedidoPendiente[2]);
-                DB::table('pedido')->insert([
-                    'estado' => EstadosPedido::$pendiente,
-                    'order-id' => $pedidoPendiente[0],
-                    'order-item-id' => $pedidoPendiente[1],
-                    'purchase-date' => Carbon::parse($timestamp)->setTimezone('EUROPE/MADRID')->format('Y-m-d'),
-                    'payments-date' => date('Y-m-d', strtotime($pedidoPendiente[3])),
-                    'reporting-date' => date('Y-m-d', strtotime($pedidoPendiente[4])),
-                    'promise-date' => date('Y-m-d', strtotime($pedidoPendiente[5])),
-                    'days-past-promise' => $pedidoPendiente[6],
-                    'buyer-email' => $pedidoPendiente[7],
-                    'buyer-name' => $pedidoPendiente[8],
-                    'buyer-phone-number' => $pedidoPendiente[9],
-                    'sku' => $pedidoPendiente[10],
-                    'product-name' => $pedidoPendiente[11],
-                    'quantity-purchased' => $pedidoPendiente[12],
-                    'quantity-shipped' => $pedidoPendiente[13],
-                    'quantity-to-ship' => $pedidoPendiente[14],
-                    'ship-service-level' => $pedidoPendiente[15],
-                    'recipient-name' => $pedidoPendiente[16],
-                    'ship-address-1' => $pedidoPendiente[17],
-                    'ship-address-2' => $pedidoPendiente[18],
-                    'ship-address-3' => $pedidoPendiente[19],
-                    'ship-city' => $pedidoPendiente[20],
-                    'ship-state' => $pedidoPendiente[21],
-                    'ship-postal-code' => $pedidoPendiente[22],
-                    'ship-country' => $pedidoPendiente[23],
-                    'sales-channel' => $pedidoPendiente[24],
-                    'is-business-order' => $pedidoPendiente[25],
-                    'purchase-order-number' => $pedidoPendiente[26],
-                    'price-designation' => $pedidoPendiente[27],
-                    'is-sold-by-ab' => $pedidoPendiente[28],
-                    'purchase-hour' => Carbon::parse($timestamp)->setTimezone('EUROPE/MADRID')->format('H:i:s'),
-                    'refc' => uniqid()
-                ]);
+                dump(substr($pedidoPendiente[22], 0, 2));
+                if(substr($pedidoPendiente[22], 0, 2) !== '07') {
+                    $timestamp = str_replace('T', ' ', $pedidoPendiente[2]);
+                    DB::table('pedido')->insert([
+                        'estado' => EstadosPedido::$pendiente,
+                        'order-id' => $pedidoPendiente[0],
+                        'order-item-id' => $pedidoPendiente[1],
+                        'purchase-date' => Carbon::parse($timestamp)->setTimezone('EUROPE/MADRID')->format('Y-m-d'),
+                        'payments-date' => date('Y-m-d', strtotime($pedidoPendiente[3])),
+                        'reporting-date' => date('Y-m-d', strtotime($pedidoPendiente[4])),
+                        'promise-date' => date('Y-m-d', strtotime($pedidoPendiente[5])),
+                        'days-past-promise' => $pedidoPendiente[6],
+                        'buyer-email' => $pedidoPendiente[7],
+                        'buyer-name' => $pedidoPendiente[8],
+                        'buyer-phone-number' => $pedidoPendiente[9],
+                        'sku' => $pedidoPendiente[10],
+                        'product-name' => $pedidoPendiente[11],
+                        'quantity-purchased' => $pedidoPendiente[12],
+                        'quantity-shipped' => $pedidoPendiente[13],
+                        'quantity-to-ship' => $pedidoPendiente[14],
+                        'ship-service-level' => $pedidoPendiente[15],
+                        'recipient-name' => $pedidoPendiente[16],
+                        'ship-address-1' => $pedidoPendiente[17],
+                        'ship-address-2' => $pedidoPendiente[18],
+                        'ship-address-3' => $pedidoPendiente[19],
+                        'ship-city' => $pedidoPendiente[20],
+                        'ship-state' => $pedidoPendiente[21],
+                        'ship-postal-code' => $pedidoPendiente[22],
+                        'ship-country' => $pedidoPendiente[23],
+                        'sales-channel' => $pedidoPendiente[24],
+                        'is-business-order' => $pedidoPendiente[25],
+                        'purchase-order-number' => $pedidoPendiente[26],
+                        'price-designation' => $pedidoPendiente[27],
+                        'is-sold-by-ab' => $pedidoPendiente[28],
+                        'purchase-hour' => Carbon::parse($timestamp)->setTimezone('EUROPE/MADRID')->format('H:i:s'),
+                        'refc' => uniqid()
+                    ]);
+                }
             }
         }
     }
