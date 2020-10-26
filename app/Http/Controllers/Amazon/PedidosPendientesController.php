@@ -75,7 +75,7 @@ class PedidosPendientesController extends Controller
         foreach ($data as $pedidoPendiente) {
             $buscarPedido = DB::table('pedido')->where('order-id', $pedidoPendiente[0])->get();
             if ($buscarPedido->count() === 0) {
-                if(substr($pedidoPendiente[22], 0, 2) !== '07') {
+                if(substr($pedidoPendiente[22], 0, 2) !== '07' && substr($pedidoPendiente[22], 0, 2) !== '07') {
                     $timestamp = str_replace('T', ' ', $pedidoPendiente[2]);
                     DB::table('pedido')->insert([
                         'estado' => EstadosPedido::$pendiente,
@@ -152,7 +152,7 @@ class PedidosPendientesController extends Controller
                 ->get();
             if ($buscarPedido->count() === 1) {
                 DB::table('pedido')->where('id', $buscarPedido[0]->id)->update([
-                    'numero_seguimiento' => $pedido[2],
+                    'numero_seguimiento' => $pedido[22],
                     'estado' => EstadosPedido::$enviado
                 ]);
                 $pedidoActualizado = DB::table('pedido')->where('id', '=', $buscarPedido[0]->id)->get();
